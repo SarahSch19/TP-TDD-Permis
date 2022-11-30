@@ -34,6 +34,7 @@ public class DrivingLicenceUpdateServiceTest {
 
     @Test
     public void shouldThrowIfDrivingLicenceNotFound () {
+        when(database.findById(drivingLicenceId)).thenReturn(Optional.empty());
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             service.update(drivingLicenceId, 6);
         });
@@ -48,7 +49,7 @@ public class DrivingLicenceUpdateServiceTest {
     }
 
     @Test
-    public void shouldUpdateAndReturnDrivingLicence () {
+    public void shouldUpdateGivenNumberOfPoints () {
         when(database.findById(drivingLicenceId)).thenReturn(Optional.ofNullable(validDrivingLicence));
         when(database.save(drivingLicenceId, validDrivingLicence)).thenReturn(validDrivingLicence.withAvailablePoints(6));
         final DrivingLicence updatedDrivingLicence = service.update(drivingLicenceId, 6) ;
