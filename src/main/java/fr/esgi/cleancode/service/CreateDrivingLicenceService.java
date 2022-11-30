@@ -20,7 +20,7 @@ public class CreateDrivingLicenceService {
         return INSTANCE;
     }
 
-    public DrivingLicence save(DrivingLicence drivingLicence){
+    public DrivingLicence save(DrivingLicence drivingLicence) throws InvalidDriverSocialSecurityNumberException {
         final var socialSecurityNumberIsValid = SocialSecurityNumberValidator.validateSocialSecurityNumber(
                 drivingLicence.getDriverSocialSecurityNumber()
         );
