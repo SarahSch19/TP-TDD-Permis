@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.Optional;
-import java.util.UUID;
 
 public class DrivingLicenceCreateServiceTest {
 
@@ -23,7 +22,7 @@ public class DrivingLicenceCreateServiceTest {
 
     @BeforeEach
     public void initValidDrivingLicence () {
-        final var id = UUID.randomUUID();
+        final var id = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
         final var validSocialSecurityNumber = "123456789012345" ;
         validDrivingLicence = DrivingLicence.builder()
                 .id(id)
@@ -34,7 +33,7 @@ public class DrivingLicenceCreateServiceTest {
     @Test
     public void shouldThrowIfSocialSecurityNumberNull () {
         final String socialSecurityNumberShort = null ;
-        final var id = UUID.randomUUID();
+        final var id = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
         final var invalidDrivingLicence = DrivingLicence.builder()
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
@@ -49,7 +48,7 @@ public class DrivingLicenceCreateServiceTest {
     @Test
     public void shouldThrowIfSocialSecurityNumberEmpty () {
         final var socialSecurityNumberShort = "" ;
-        final var id = UUID.randomUUID();
+        final var id = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
         final var invalidDrivingLicence = DrivingLicence.builder()
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
@@ -62,7 +61,7 @@ public class DrivingLicenceCreateServiceTest {
     @Test
     public void shouldThrowIfSocialSecurityNumberTooShort () {
         final var socialSecurityNumberShort = "12345678901234" ;
-        final var id = UUID.randomUUID();
+        final var id = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
         final var invalidDrivingLicence = DrivingLicence.builder()
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
@@ -75,7 +74,7 @@ public class DrivingLicenceCreateServiceTest {
     @Test
     public void shouldThrowIfSocialSecurityNumberTooLong () {
         final var socialSecurityNumberShort = "1234567890123456" ;
-        final var id = UUID.randomUUID();
+        final var id = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
         final var invalidDrivingLicence = DrivingLicence.builder()
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
@@ -88,7 +87,7 @@ public class DrivingLicenceCreateServiceTest {
     @Test
     public void shouldThrowIfSocialSecurityNumberWithLetter () {
         final var socialSecurityNumberShort = "1234567abc1234" ;
-        final var id = UUID.randomUUID();
+        final var id = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
         final var invalidDrivingLicence = DrivingLicence.builder()
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
@@ -101,7 +100,7 @@ public class DrivingLicenceCreateServiceTest {
     @Test
     public void shouldNotThrowIfSocialSecurityNumberValid () {
         final var socialSecurityNumberShort = "123456789012345" ;
-        final var id = UUID.randomUUID();
+        final var id = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
         final var invalidDrivingLicence = DrivingLicence.builder()
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
@@ -114,7 +113,13 @@ public class DrivingLicenceCreateServiceTest {
     @Test
     public void shouldInsertAndReturnDrivingLicence() {
         Optional<DrivingLicence> createdDrivingLicence = Optional.ofNullable(createService.save(validDrivingLicence));
-        Assertions.assertEquals(db.findById(validDrivingLicence.getId()), createdDrivingLicence);
+        Assertions.assertEquals(createdDrivingLicence, db.findById(validDrivingLicence.getId()));
+    }
+
+    @Test
+    public void shouldInsertDrivingLicenceWith12Points() {
+        Optional<DrivingLicence> createdDrivingLicence = Optional.ofNullable(createService.save(validDrivingLicence));
+        Assertions.assertEquals(12, createdDrivingLicence.get().getAvailablePoints());
     }
 
 }
