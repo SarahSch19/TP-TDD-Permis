@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class DrivingLicenceCreateServiceTest {
@@ -32,15 +33,17 @@ public class DrivingLicenceCreateServiceTest {
 
     @Test
     public void shouldThrowIfSocialSecurityNumberNull () {
-        final var socialSecurityNumberShort = null ;
+        final String socialSecurityNumberShort = null ;
         final var id = UUID.randomUUID();
         final var invalidDrivingLicence = DrivingLicence.builder()
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
                 .build();
-        Assertions.assertThrows(() -> {
-            createService.save(validDrivingLicence) ;
-        }, InvalidDriverSocialSecurityNumberException.class) ;
+        Assertions.assertThrows(
+                InvalidDriverSocialSecurityNumberException.class,
+                () -> {
+                    createService.save(invalidDrivingLicence) ;
+                }) ;
     }
 
     @Test
@@ -51,9 +54,9 @@ public class DrivingLicenceCreateServiceTest {
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
                 .build();
-        Assertions.assertThrows(() -> {
-            createService.save(validDrivingLicence) ;
-        }, InvalidDriverSocialSecurityNumberException.class) ;
+        Assertions.assertThrows(InvalidDriverSocialSecurityNumberException.class, () -> {
+            createService.save(invalidDrivingLicence) ;
+        }) ;
     }
 
     @Test
@@ -64,9 +67,9 @@ public class DrivingLicenceCreateServiceTest {
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
                 .build();
-        Assertions.assertThrows(() -> {
-            createService.save(validDrivingLicence) ;
-        }, InvalidDriverSocialSecurityNumberException.class) ;
+        Assertions.assertThrows(InvalidDriverSocialSecurityNumberException.class, () -> {
+            createService.save(invalidDrivingLicence) ;
+        }) ;
     }
 
     @Test
@@ -77,9 +80,9 @@ public class DrivingLicenceCreateServiceTest {
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
                 .build();
-        Assertions.assertThrows(() -> {
-            createService.save(validDrivingLicence) ;
-        }, InvalidDriverSocialSecurityNumberException.class) ;
+        Assertions.assertThrows(InvalidDriverSocialSecurityNumberException.class, () -> {
+            createService.save(invalidDrivingLicence) ;
+        }) ;
     }
 
     @Test
@@ -90,9 +93,9 @@ public class DrivingLicenceCreateServiceTest {
                 .id(id)
                 .driverSocialSecurityNumber(socialSecurityNumberShort)
                 .build();
-        Assertions.assertThrows(() -> {
-            createService.save(validDrivingLicence) ;
-        }, InvalidDriverSocialSecurityNumberException.class) ;
+        Assertions.assertThrows(InvalidDriverSocialSecurityNumberException.class, () -> {
+            createService.save(invalidDrivingLicence) ;
+        }) ;
     }
 
     @Test
@@ -110,7 +113,7 @@ public class DrivingLicenceCreateServiceTest {
     
     @Test
     public void shouldInsertAndReturnDrivingLicence() {
-        var createdDrivingLicence = createService.save(validDrivingLicence) ;
+        Optional<DrivingLicence> createdDrivingLicence = Optional.ofNullable(createService.save(validDrivingLicence));
         Assertions.assertEquals(db.findById(validDrivingLicence.getId()), createdDrivingLicence);
     }
 
