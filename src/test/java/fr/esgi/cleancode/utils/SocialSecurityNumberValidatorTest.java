@@ -11,6 +11,19 @@ public class SocialSecurityNumberValidatorTest {
 
 
     @Test
+    public void shouldNotValidateSocialSecurityNumberNull () {
+        final var socialSecurityNumberIsValid = SocialSecurityNumberValidator.validateSocialSecurityNumber(null) ;
+        Assertions.assertEquals(false, socialSecurityNumberIsValid);
+    }
+
+
+    @Test
+    public void shouldNotValidateSocialSecurityNumberEmpty () {
+        final var socialSecurityNumberIsValid = SocialSecurityNumberValidator.validateSocialSecurityNumber("") ;
+        Assertions.assertEquals(false, socialSecurityNumberIsValid);
+    }
+
+    @Test
     public void shouldNotValidateSocialSecurityNumberTooShort () {
         final var socialSecurityNumberIsValid = SocialSecurityNumberValidator.validateSocialSecurityNumber(socialSecurityNumberShort) ;
         Assertions.assertEquals(false, socialSecurityNumberIsValid);
