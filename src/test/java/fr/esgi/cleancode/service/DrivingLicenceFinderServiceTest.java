@@ -36,7 +36,7 @@ class DrivingLicenceFinderServiceTest {
 
         final var actual = service.findById(drivingLicenceId);
 
-        Assertions.assertSame(Optional.ofNullable(validDrivingLicence), actual);
+        Assertions.assertEquals(Optional.ofNullable(validDrivingLicence), actual);
         verify(database).findById(drivingLicenceId);
         verifyNoMoreInteractions(database);
     }
@@ -47,7 +47,7 @@ class DrivingLicenceFinderServiceTest {
 
         final var actual = service.findById(drivingLicenceId);
 
-        Assertions.assertNull(actual);
+        Assertions.assertEquals(Optional.empty(), actual);
         verify(database).findById(drivingLicenceId);
         verifyNoMoreInteractions(database);
     }
