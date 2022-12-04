@@ -15,8 +15,8 @@ public class DrivingLicenceUpdateService {
     private final InMemoryDatabase database;
 
     public DrivingLicence update (UUID drivingLicenceId, Integer pointsTORemove) throws ResourceNotFoundException {
-        var drivingLicenceToUpdate = database.findById(drivingLicenceId) ;
-        if (Objects.equals(drivingLicenceId, Optional.empty())) {
+        var drivingLicenceToUpdate = this.database.findById(drivingLicenceId) ;
+        if (Objects.equals(drivingLicenceToUpdate, Optional.empty())) {
             throw new ResourceNotFoundException("Driving licence with id " + drivingLicenceId.toString() + " not found");
         }
 
