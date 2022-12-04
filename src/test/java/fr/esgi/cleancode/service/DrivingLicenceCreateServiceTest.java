@@ -6,17 +6,21 @@ import fr.esgi.cleancode.model.DrivingLicence;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+@ExtendWith(MockitoExtension.class)
 public class DrivingLicenceCreateServiceTest {
 
     @Mock
-    private final InMemoryDatabase db = InMemoryDatabase.getInstance();
+    private  InMemoryDatabase db;
 
-    @Mock
-    private final CreateDrivingLicenceService createService = CreateDrivingLicenceService.getInstance() ;
+    @InjectMocks
+    private CreateDrivingLicenceService createService ;
 
     private DrivingLicence validDrivingLicence ;
 
@@ -112,8 +116,8 @@ public class DrivingLicenceCreateServiceTest {
     
     @Test
     public void shouldInsertAndReturnDrivingLicence() {
-        Optional<DrivingLicence> createdDrivingLicence = Optional.ofNullable(createService.save(validDrivingLicence));
-        Assertions.assertEquals(createdDrivingLicence, db.findById(validDrivingLicence.getId()));
+        DrivingLicence createdDrivingLicence = createService.save(validDrivingLicence);
+        Assertions.assertEquals(validDrivingLicence, createdDrivingLicence);
     }
 
     @Test
