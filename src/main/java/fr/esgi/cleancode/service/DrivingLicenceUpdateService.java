@@ -5,8 +5,6 @@ import fr.esgi.cleancode.exception.ResourceNotFoundException;
 import fr.esgi.cleancode.model.DrivingLicence;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -14,14 +12,15 @@ public class DrivingLicenceUpdateService {
 
     private final InMemoryDatabase database;
 
-    public DrivingLicence update (UUID drivingLicenceId, Integer pointsTORemove) throws ResourceNotFoundException {
+    public DrivingLicence updatePoints(UUID drivingLicenceId, Integer pointsTORemove) throws ResourceNotFoundException {
         var drivingLicenceToUpdate = this.database.findById(drivingLicenceId) ;
-        if (Objects.equals(drivingLicenceToUpdate, Optional.empty())) {
+        if (drivingLicenceToUpdate.isEmpty()) {
             throw new ResourceNotFoundException("Driving licence with id " + drivingLicenceId.toString() + " not found");
         }
+        DrivingLicence updatedDrivingLicence = drivingLicenceToUpdate.get();
 
-        final var updatedPoints = Math.max(drivingLicenceToUpdate.get().getAvailablePoints() - pointsTORemove, 0);
-        DrivingLicence updatedDrivingLicence = drivingLicenceToUpdate.get().withAvailablePoints(updatedPoints);
+        final var updatedPoints = Math.max(updatedDrivingLicence.getAvailablePoints() - pointsTORemove, 0);
+        updatedDrivingLicence = updatedDrivingLicence.withAvailablePoints(updatedPoints);
         return database.save(drivingLicenceId, updatedDrivingLicence);
     }
 }

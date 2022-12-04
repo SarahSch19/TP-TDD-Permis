@@ -7,7 +7,7 @@ import fr.esgi.cleancode.utils.SocialSecurityNumberValidator;
 
 public class CreateDrivingLicenceService {
 
-    private final InMemoryDatabase db = InMemoryDatabase.getInstance();
+    private final InMemoryDatabase database = InMemoryDatabase.getInstance();
 
     private static CreateDrivingLicenceService INSTANCE;
 
@@ -27,6 +27,6 @@ public class CreateDrivingLicenceService {
         if(!socialSecurityNumberIsValid)
             throw new InvalidDriverSocialSecurityNumberException("Invalid social security number");
 
-        return db.save(drivingLicence.getId(), drivingLicence);
+        return database.save(drivingLicence.getId(), drivingLicence);
     }
 }

@@ -39,7 +39,7 @@ public class DrivingLicenceUpdateServiceTest {
     public void shouldThrowIfDrivingLicenceNotFound () {
         when(database.findById(drivingLicenceId)).thenReturn(Optional.empty());
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
-            service.update(drivingLicenceId, 6);
+            service.updatePoints(drivingLicenceId, 6);
         });
     }
 
@@ -52,7 +52,7 @@ public class DrivingLicenceUpdateServiceTest {
 
         Assertions.assertEquals(12, validDrivingLicence.getAvailablePoints());
 
-        final DrivingLicence updatedDrivingLicence = service.update(drivingLicenceId, 13);
+        final DrivingLicence updatedDrivingLicence = service.updatePoints(drivingLicenceId, 13);
         Assertions.assertEquals(0, updatedDrivingLicence.getAvailablePoints());
     }
 
@@ -64,7 +64,7 @@ public class DrivingLicenceUpdateServiceTest {
         when(database.save(drivingLicenceId, drivingLicenceWithSixPoints)).thenReturn(drivingLicenceWithSixPoints);
 
         Assertions.assertEquals(12, validDrivingLicence.getAvailablePoints());
-        final DrivingLicence updatedDrivingLicence = service.update(drivingLicenceId, 6) ;
+        final DrivingLicence updatedDrivingLicence = service.updatePoints(drivingLicenceId, 6) ;
         Assertions.assertEquals(drivingLicenceWithSixPoints.getAvailablePoints(), updatedDrivingLicence.getAvailablePoints());
     }
 
@@ -75,7 +75,7 @@ public class DrivingLicenceUpdateServiceTest {
         when(database.findById(drivingLicenceId)).thenReturn(Optional.ofNullable(validDrivingLicence));
         when(database.save(drivingLicenceId, drivingLicenceWithSixPoints)).thenReturn(drivingLicenceWithSixPoints);
 
-        final DrivingLicence updatedDrivingLicence = service.update(drivingLicenceId, 6) ;
+        final DrivingLicence updatedDrivingLicence = service.updatePoints(drivingLicenceId, 6) ;
         Assertions.assertEquals(drivingLicenceWithSixPoints, updatedDrivingLicence);
     }
 
