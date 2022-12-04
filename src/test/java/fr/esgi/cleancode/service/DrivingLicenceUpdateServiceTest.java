@@ -6,21 +6,24 @@ import fr.esgi.cleancode.model.DrivingLicence;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class DrivingLicenceUpdateServiceTest {
 
     @InjectMocks
     private DrivingLicenceUpdateService service;
 
     @Mock
-    private InMemoryDatabase database;
+    private InMemoryDatabase database ;
     private DrivingLicence validDrivingLicence ;
     private final UUID drivingLicenceId = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
 
@@ -42,28 +45,38 @@ public class DrivingLicenceUpdateServiceTest {
 
     @Test
     public void shouldNotRemovePointsBelowZero () {
+        DrivingLicence drivingLicenceWithZeroPoints = validDrivingLicence.withAvailablePoints(0);
+
         when(database.findById(drivingLicenceId)).thenReturn(Optional.ofNullable(validDrivingLicence));
-        when(database.save(drivingLicenceId, validDrivingLicence)).thenReturn(validDrivingLicence.withAvailablePoints(0));
+        when(database.save(drivingLicenceId, drivingLicenceWithZeroPoints)).thenReturn(drivingLicenceWithZeroPoints);
+
+        Assertions.assertEquals(12, validDrivingLicence.getAvailablePoints());
+
         final DrivingLicence updatedDrivingLicence = service.update(drivingLicenceId, 13);
         Assertions.assertEquals(0, updatedDrivingLicence.getAvailablePoints());
     }
 
     @Test
     public void shouldUpdateGivenNumberOfPoints () {
+        DrivingLicence drivingLicenceWithSixPoints = validDrivingLicence.withAvailablePoints(6);
+
         when(database.findById(drivingLicenceId)).thenReturn(Optional.ofNullable(validDrivingLicence));
-        when(database.save(drivingLicenceId, validDrivingLicence)).thenReturn(validDrivingLicence.withAvailablePoints(6));
+        when(database.save(drivingLicenceId, drivingLicenceWithSixPoints)).thenReturn(drivingLicenceWithSixPoints);
+
+        Assertions.assertEquals(12, validDrivingLicence.getAvailablePoints());
         final DrivingLicence updatedDrivingLicence = service.update(drivingLicenceId, 6) ;
-        validDrivingLicence = validDrivingLicence.withAvailablePoints(6) ;
-        Assertions.assertEquals(validDrivingLicence.getAvailablePoints(), updatedDrivingLicence.getAvailablePoints());
+        Assertions.assertEquals(drivingLicenceWithSixPoints.getAvailablePoints(), updatedDrivingLicence.getAvailablePoints());
     }
 
     @Test
     public void shouldUpdateAndReturnDrivingLicence () {
+        DrivingLicence drivingLicenceWithSixPoints = validDrivingLicence.withAvailablePoints(6);
+
         when(database.findById(drivingLicenceId)).thenReturn(Optional.ofNullable(validDrivingLicence));
-        when(database.save(drivingLicenceId, validDrivingLicence)).thenReturn(validDrivingLicence.withAvailablePoints(6));
+        when(database.save(drivingLicenceId, drivingLicenceWithSixPoints)).thenReturn(drivingLicenceWithSixPoints);
+
         final DrivingLicence updatedDrivingLicence = service.update(drivingLicenceId, 6) ;
-        validDrivingLicence = validDrivingLicence.withAvailablePoints(6) ;
-        Assertions.assertEquals(validDrivingLicence, updatedDrivingLicence);
+        Assertions.assertEquals(drivingLicenceWithSixPoints, updatedDrivingLicence);
     }
 
 }
