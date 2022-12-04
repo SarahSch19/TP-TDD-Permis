@@ -9,17 +9,6 @@ public class CreateDrivingLicenceService {
 
     private final InMemoryDatabase database = InMemoryDatabase.getInstance();
 
-    private static CreateDrivingLicenceService INSTANCE;
-
-    private CreateDrivingLicenceService(){}
-
-    public synchronized static CreateDrivingLicenceService getInstance() {
-        if (INSTANCE == null) {
-            return new CreateDrivingLicenceService();
-        }
-        return INSTANCE;
-    }
-
     public DrivingLicence save(DrivingLicence drivingLicence) throws InvalidDriverSocialSecurityNumberException {
         final var socialSecurityNumberIsValid = SocialSecurityNumberValidator.validateSocialSecurityNumber(
                 drivingLicence.getDriverSocialSecurityNumber()
