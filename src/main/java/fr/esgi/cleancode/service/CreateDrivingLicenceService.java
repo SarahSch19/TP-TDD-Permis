@@ -5,7 +5,7 @@ import fr.esgi.cleancode.exception.InvalidDriverSocialSecurityNumberException;
 import fr.esgi.cleancode.model.DrivingLicence;
 import fr.esgi.cleancode.utils.SocialSecurityNumberValidator;
 
-public class CreateDrivingLicenceService {
+public final class CreateDrivingLicenceService {
 
     private final InMemoryDatabase database = InMemoryDatabase.getInstance();
 

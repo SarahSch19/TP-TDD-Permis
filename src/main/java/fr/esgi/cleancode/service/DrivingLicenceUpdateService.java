@@ -8,18 +8,18 @@ import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class DrivingLicenceUpdateService {
+public final class DrivingLicenceUpdateService {
 
     private final InMemoryDatabase database;
 
-    public DrivingLicence updatePoints(UUID drivingLicenceId, Integer pointsTORemove) throws ResourceNotFoundException {
+    public DrivingLicence updatePoints(UUID drivingLicenceId, Integer pointsToRemove) throws ResourceNotFoundException {
         var drivingLicenceToUpdate = this.database.findById(drivingLicenceId) ;
         if (drivingLicenceToUpdate.isEmpty()) {
             throw new ResourceNotFoundException("Driving licence with id " + drivingLicenceId.toString() + " not found");
         }
         DrivingLicence updatedDrivingLicence = drivingLicenceToUpdate.get();
 
-        final var updatedPoints = Math.max(updatedDrivingLicence.getAvailablePoints() - pointsTORemove, 0);
+        final var updatedPoints = Math.max(updatedDrivingLicence.getAvailablePoints() - pointsToRemove, 0);
         updatedDrivingLicence = updatedDrivingLicence.withAvailablePoints(updatedPoints);
         return database.save(drivingLicenceId, updatedDrivingLicence);
     }

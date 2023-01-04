@@ -22,13 +22,13 @@ class DrivingLicenceFinderServiceTest {
 
     @Mock
     private InMemoryDatabase database;
-    private DrivingLicence validDrivingLicence ;
+
     private final UUID drivingLicenceId = DrivingLicenceIdGenerationService.generateNewDrivingLicenceId();
 
     @Test
     void shouldFindDrivingLicenceInDatabase() {
         final var validSocialSecurityNumber = "123456789012345" ;
-        validDrivingLicence = DrivingLicence.builder()
+        DrivingLicence validDrivingLicence = DrivingLicence.builder()
                 .id(drivingLicenceId)
                 .driverSocialSecurityNumber(validSocialSecurityNumber)
                 .build();

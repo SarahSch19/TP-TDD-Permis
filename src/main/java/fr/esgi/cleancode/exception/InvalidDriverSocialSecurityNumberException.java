@@ -1,6 +1,6 @@
 package fr.esgi.cleancode.exception;
 
-public class InvalidDriverSocialSecurityNumberException extends RuntimeException {
+public final class InvalidDriverSocialSecurityNumberException extends RuntimeException {
     public InvalidDriverSocialSecurityNumberException(String message) {
         super(message);
     }
